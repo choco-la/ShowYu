@@ -59,3 +59,8 @@ typings/
 
 # next.js build output
 .next
+
+# repo config
+js/
+webext/*.xpi
+webext/index.js

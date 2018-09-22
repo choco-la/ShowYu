@@ -1,0 +1,16 @@
+{
+  "name": "show-yu",
+  "version": "1.0.0",
+  "devDependencies": {
+    "@types/node": "^10.9.4",
+    "browserify": "^16.2.2",
+    "tslint": "^5.11.0",
+    "tslint-config-standard": "^8.0.1",
+    "typescript": "^3.0.3"
+  },
+  "scripts": {
+    "build": "tsc; browserify js/main.js -o ./webext/index.js",
+    "webext": "npm run build; npm run webext:package",
+    "webext:package": "cd webext/; zip -r addon.xpi icons/ index.js manifest.json"
+  }
+}

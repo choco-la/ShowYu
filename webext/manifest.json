@@ -1,0 +1,28 @@
+{
+  "manifest_version": 2,
+  "name": "ShowYu",
+  "description": "Show you additional information on Mastodon.",
+  "version": "1.0.0",
+  "homepage_url": "https://github.com/choco-la/ShowYu",
+  "icons": {
+    "48": "icons/icon48.png",
+    "96": "icons/icon96.png",
+    "128": "icons/icon128.png"
+  },
+  "applications": {
+    "gecko": {
+      "id": "showyu@example.com",
+      "update_url": "https://choco-la.github.io/ShowYu/update.json"
+    }
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://friends.nico/web/*"
+      ],
+      "js": [
+        "index.js"
+      ]
+    }
+  ]
+}
