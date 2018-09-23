@@ -91,3 +91,15 @@ export interface Window {
   origin: string
   XMLHttpRequest: typeof XMLHttpRequest
 }
+
+export interface IChrome {
+  storage: {
+    local: {
+      get: (key: string, callback: (item: IChromeItem) => void) => {[key: string]: string}
+    }
+  }
+}
+
+export interface IChromeItem {
+  [key: string]: {regexPattern: string}
+}

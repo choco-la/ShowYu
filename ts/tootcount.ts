@@ -17,7 +17,7 @@ const replaceTootCount = (count: string) => {
 }
 
 const execReplace = async (dataID: string, token: string) => {
-  const responce = await getAccounts(dataID, token)
+  const responce = await getAccounts(dataID, token).catch(() => { throw new Error('Failed to fetch Account') })
   const accounts = await responce.json() as IAccount
 
   const tootCount = accounts.statuses_count.toString()

@@ -11,6 +11,6 @@
   "scripts": {
     "build": "tsc; browserify js/main.js -o ./webext/index.js",
     "webext": "npm run build; npm run webext:package",
-    "webext:package": "cd webext/; zip -r addon.xpi icons/ index.js manifest.json"
+    "webext:package": "cd webext/; zip -r addon.xpi icons/ index.js manifest.json option.html option.js"
   }
 }
