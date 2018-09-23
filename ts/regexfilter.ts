@@ -15,7 +15,7 @@ const isTimelime = (text: string): string | null => {
 
 const getTimelines = () => {
   // const columns = document.querySelectorAll('.column')
-  const columns = document.getElementsByClassName('column')
+  const columns = document.querySelectorAll('.column')
   const timelines: { [key: string]: Element | null } = {
     federated: null,
     home: null,
