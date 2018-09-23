@@ -1,20 +1,89 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
+  <head>
+      <meta charset="UTF-8">
+      <style>
+      body {
+        width: 100%;
+        padding: 0%;
+        margin: 0%;
+        border: 0px;
+      }
+      input {
+        width: 100%;
+        box-sizing: border-box;
+      }
+      summary {
+        font-size: 1.2em;
+      }
+    </style>
+  </head>
+<body>
+
+  <details>
+    <summary>mstdn.jp</summary>
     <form accept-charset="utf-8">
-        <label for="regex">mstdn.jp:</label>
-        <input type="text" name="mstdn_jp" placeholder="Regular Expression">
+      <input type="text" name="mstdn_jp" timeline="all" placeholder="All">
+    </form>
+    <form>
+      <input type="text" name="mstdn_jp" timeline="home" placeholder="Home">
+    </form>
+    <form>
+      <input type="text" name="mstdn_jp" timeline="local" placeholder="Local">
+    </form>
+    <form>
+      <input type="text" name="mstdn_jp" timeline="federated" placeholder="Federated">
+    </form>
+  </details>
+
+  <details>
+    <summary>pawoo.net</summary>
+    <form accept-charset="utf-8">
+      <input type="text" name="pawoo_net" timeline="all" placeholder="All">
     </form>
     <form accept-charset="utf-8">
-        <label for="regex">pawoo.net:</label>
-        <input type="text" name="pawoo_net" placeholder="Regular Expression">
+      <input type="text" name="pawoo_net" timeline="home" placeholder="Home">
     </form>
     <form accept-charset="utf-8">
-        <label for="regex">music.pawoo.net:</label>
-        <input type="text" name="music_pawoo_net" placeholder="Regular Expression">
+      <input type="text" name="pawoo_net" timeline="local" placeholder="Local">
     </form>
     <form accept-charset="utf-8">
-        <label for="regex">friends.nico:</label>
-        <input type="text" name="friends_nico" placeholder="Regular Expression">
+      <input type="text" name="pawoo_net" timeline="federated" placeholder="Federated">
     </form>
-    <script type="text/javascript" src="option.js" charset="utf-8"></script>
+  </details>
+
+  <details>
+      <summary>music.pawoo.net</summary>
+      <form accept-charset="utf-8">
+        <input type="text" name="music_pawoo_net" timeline="all" placeholder="All">
+      </form>
+      <form accept-charset="utf-8">
+        <input type="text" name="music_pawoo_net" timeline="home" placeholder="Home">
+      </form>
+      <form accept-charset="utf-8">
+        <input type="text" name="music_pawoo_net" timeline="local" placeholder="Local">
+      </form>
+      <form accept-charset="utf-8">
+        <input type="text" name="music_pawoo_net" timeline="federated" placeholder="Federated">
+      </form>
+  </details>
+
+  <details>
+      <summary>friends.nico</summary>
+      <form accept-charset="utf-8">
+        <input type="text" name="friends_nico" timeline="all" placeholder="All">
+      </form>
+      <form accept-charset="utf-8">
+        <input type="text" name="friends_nico" timeline="home" placeholder="Home">
+      </form>
+      <form accept-charset="utf-8">
+        <input type="text" name="friends_nico" timeline="local" placeholder="Local">
+      </form>
+      <form accept-charset="utf-8">
+        <input type="text" name="friends_nico" timeline="federated" placeholder="Federated">
+      </form>
+  </details>
+</body>
+
+  <script type="text/javascript" src="option.js" charset="utf-8"></script>
 </html>

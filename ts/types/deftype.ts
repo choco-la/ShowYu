@@ -39,7 +39,7 @@ export interface IRelationship {
 
 export interface IStatus {
   account: IAccount
-  application: { name: string , website: string | null }
+  application: { name: string, website: string | null }
   content: string
   favourited: boolean
   id: string
@@ -100,6 +100,13 @@ export interface IChrome {
   }
 }
 
+interface IRegexPatterns {
+  all: string
+  federated: string
+  home: string
+  local: string
+}
+
 export interface IChromeItem {
-  [key: string]: {regexPattern: string}
+  [instance: string]: IRegexPatterns
 }

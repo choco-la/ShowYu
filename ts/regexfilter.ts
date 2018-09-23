@@ -1,22 +1,36 @@
 import { IChrome, IChromeItem } from './types/deftype'
 import { isHTMLElem } from './types/typeguards'
 
-const isTimelineEN = (text: string): boolean => /Home|(?:Local|Federated)[\s]timeline/.test(text)
-const isTimelineJP = (text: string): boolean => /ホーム|(?:ローカル|連合)タイムライン/.test(text)
+const isTimelime = (text: string): string | null => {
+  const checker = {
+    federated: /連合タイムライン|Federated timeline/,
+    home: /ホーム|Home timeline/,
+    local: /ローカルタイムライン|Local timeline/
+  }
+  for (const [timeline, regex] of Object.entries(checker)) {
+    if (regex.test(text)) return timeline
+  }
+  return null
+}
 
-const COLUMNS = document.querySelectorAll('.column')
-console.debug(COLUMNS)
-const TIMELINES: Element[] = (() => {
-  const timelines: Element[] = []
-  for (const column of COLUMNS) {
+const getTimelines = () => {
+  // const columns = document.querySelectorAll('.column')
+  const columns = document.getElementsByClassName('column')
+  const timelines: { [key: string]: Element | null } = {
+    federated: null,
+    home: null,
+    local: null
+  }
+  for (const column of columns) {
     const button = column.querySelector('button')
     if (!isHTMLElem(button)) continue
-    if (!isTimelineJP(button.innerText) && !isTimelineEN(button.innerText)) continue
+    const timeline = isTimelime(button.innerText)
 
-    timelines.push(column)
+    if (timeline) timelines[timeline] = column
   }
+
   return timelines
-})()
+}
 
 const muteFilter = (nodelist: NodeList, regex: RegExp) => {
   for (const node of nodelist) {
@@ -32,28 +46,63 @@ const muteFilter = (nodelist: NodeList, regex: RegExp) => {
   }
 }
 
-const muteWithRegex = (regex: RegExp) => {
-  const onMutation: MutationCallback = (mutation) => mutation.map((dom) => muteFilter(dom.addedNodes, regex))
+const muteWithRegex = (regex: RegExp, timeline: Element) => {
+  const onMutation: MutationCallback = (mutation) => mutation.map((dom) => {
+    muteFilter(dom.addedNodes, regex)
+  })
   const observer = new MutationObserver(onMutation)
   const configure = {
     childList: true
   }
-  TIMELINES.map((timeline) => observer.observe(timeline.getElementsByClassName('item-list')[0], configure))
+  observer.observe(timeline.getElementsByClassName('item-list')[0], configure)
+}
+
+const regexPatterns: {[key: string]: string[]} = {
+  federated: [],
+  home: [],
+  local: []
+}
+
+const getStorage = (): Promise<IChromeItem> => {
+  return new Promise((resolve, _) => {
+    chrome.storage.local.get(location.hostname, (item: IChromeItem) => {
+      resolve(item)
+    })
+  })
 }
 
 declare var chrome: IChrome
-export const applyRegexFilter = () => {
+export const applyRegexFilter = async () => {
   try {
-    chrome.storage.local.get(location.hostname, (item: IChromeItem) => {
-      if (item[location.hostname].regexPattern) {
-        const regexPattern = item[location.hostname].regexPattern
-        muteWithRegex(new RegExp(regexPattern))
+    const storage = await getStorage()
+    const instanceRegex = storage[location.hostname]
+    Object.entries(instanceRegex).map(([timeline, pattern]) => {
+      if (timeline === 'all') {
+        Object.keys(regexPatterns).map((tl) => regexPatterns[tl].push(pattern))
+      } else {
+        regexPatterns[timeline].push(pattern)
       }
     })
-  } catch {
+  } catch (err) {
+    console.error(err)
     const pattern = prompt('Enter Regular Expression')
     if (pattern) {
-      muteWithRegex(new RegExp(pattern))
+      Object.keys(regexPatterns).map((tl) => regexPatterns[tl].push(pattern))
     }
+  }
+
+  // Apply
+  for (const [title, dom] of Object.entries(getTimelines())) {
+    if (!dom) {
+      console.debug('no dom found')
+      continue
+    }
+    if (!regexPatterns[title].length) {
+      console.debug('no regex found')
+      continue
+    }
+    const pattern = regexPatterns[title].join('|')
+    if (!pattern || !pattern.trim()) continue
+    muteWithRegex(new RegExp(pattern.trim()), dom)
   }
 }
